@@ -33,14 +33,14 @@ app.use(
     keys: ['key1', 'key2'],
   }),
 );
-app.use('/', bundler.middleware());
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/assets', express.static(path.resolve(__dirname, '../client/components/assets/')));
-app.use(express.static(path.join(__dirname, '../client/')));
+app.use(express.static(path.join(__dirname, '../dist/')));
 app.use('/login', loginRouter.router);
 app.use('/questions', questionsRouter.router);
-app.get('/profile', authenticationController.checkUserLoggedIn, (req, res) => res.status(200).sendFile(path.join(__dirname, '../client/index.html')));
+app.get('/profile', authenticationController.checkUserLoggedIn, (req, res) => res.status(200).sendFile(path.join(__dirname, '../dist/index.html')));
 
 app.get('/getUserInfo', infoController.getUserInfo);
 app.get('/getCategories', infoController.getCategories);
@@ -55,7 +55,7 @@ app.get('/logout', (req, res) => {
 
 // app.post('/Messages', infoController.postMessageBoard, (req, res) => console.log('end of chain'));
 
-app.use('/*', authenticationController.checkUserLoggedIn, (req, res) => res.status(200).sendFile(path.join(__dirname, '../client/index.html')));
+app.use('/*', authenticationController.checkUserLoggedIn, (req, res) => res.status(200).sendFile(path.join(__dirname, '../dist/index.html')));
 app.use('*', (req, res) => {
   res.status(404).send('Not Found');
 });
