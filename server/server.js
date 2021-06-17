@@ -4,6 +4,13 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const dotenv = require('dotenv');
+const Bundler = require('parcel-bundler');
+const entry = path.join(__dirname, '../client/index.html');
+
+const options = {};
+
+const bundler = new Bundler(entry, options);
+
 
 dotenv.config();
 
@@ -26,7 +33,7 @@ app.use(
     keys: ['key1', 'key2'],
   }),
 );
-
+app.use('/', bundler.middleware());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/assets', express.static(path.resolve(__dirname, '../client/components/assets/')));
